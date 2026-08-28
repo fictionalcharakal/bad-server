@@ -11,6 +11,7 @@ import { getCurrentUserOrderByNumber } from '../../services/slice/profile-orders
 import { adapterOrderFromServer } from '../../utils/adapterOrderFromServer'
 import { Preloader } from '../preloader'
 import styles from './profile.module.scss'
+import { sanitizeHtml } from '../../utils/sanitize'
 
 const CloseButton = () => {
     const navigate = useNavigate()
@@ -73,7 +74,9 @@ export default function ProfileOrderDetail() {
                         {dataInfo.comment ? (
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: dataInfo.comment,
+                                    __html: sanitizeHtml(
+                                        dataInfo.comment
+                                    ),
                                 }}
                             />
                         ) : (

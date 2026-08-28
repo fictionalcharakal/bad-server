@@ -16,7 +16,7 @@ interface PaginationResult<_, U> {
 }
 
 const usePagination = <T, U>(
-    asyncAction: AsyncThunk<T, Record<string, unknown>, any>,
+    asyncAction: AsyncThunk<T, Record<string, unknown>, { state: RootState }>,
     selector: (state: RootState) => U[],
     defaultLimit: number
 ): PaginationResult<T, U> => {
@@ -32,9 +32,17 @@ const usePagination = <T, U>(
 
     const limit = Number(searchParams.get('limit')) || defaultLimit
 
-    const fetchData = async (params: Record<string, any>) => {
-        const response: any = await dispatch(asyncAction(params))
-        setTotalPages(response.payload.pagination.totalPages)
+    const fetchData = async (params: Record<string, unknown>) => {
+        const response = (await dispatch(asyncAction(params))) as {
+            payload: T
+        }
+        setTotalPages(
+            (
+                response.payload as unknown as {
+                    pagination: { totalPages: number }
+                }
+            ).pagination.totalPages
+        )
     }
 
     useEffect(() => {
@@ -46,8 +54,9 @@ const usePagination = <T, U>(
         })
     }, [currentPage, limit, searchParams])
 
-    const updateURL = (newParams: Record<string, any>) => {
-        3
+    const updateURL = (
+        newParams: Record<string, string | number | undefined>
+    ) => {
         const updatedParams = new URLSearchParams(searchParams)
         Object.entries(newParams).forEach(([key, value]) => {
             if (value !== undefined) {

@@ -1,6 +1,6 @@
 # Проектная работа "WebLarek. Плохой сервер.", спринт 17
-https://github.com/fictionalcharakal/bad-server
-Регина, 46 когорта, курс fullstack-разработчик
+  https://github.com/fictionalcharakal/bad-server
+  Регина, 46 когорта, курс fullstack-разработчик
 ## Подготовка к работе
 1. Склонировать репозиторий
 2. Запустить docker

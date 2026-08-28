@@ -22,3 +22,6 @@ export const REFRESH_TOKEN = {
         } as CookieOptions,
     },
 }
+export const { ORIGIN_ALLOW = 'http://localhost' } = process.env
+
+export const CSRF_SECRET = process.env.CSRF_SECRET || 'csrf-secret-dev'

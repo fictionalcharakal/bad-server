@@ -27,7 +27,7 @@ export const getCustomers = async (
             orderCountTo,
             search,
         } = req.query
-        
+
         const safeLimit = clampLimit(limit)
 
         const filters: FilterQuery<Partial<IUser>> = {}

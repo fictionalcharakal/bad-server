@@ -2,7 +2,7 @@ import { ErrorRequestHandler } from 'express'
 import { MulterError } from 'multer'
 
 const errorHandler: ErrorRequestHandler = (err, _req, res, next) => {
-   if (err instanceof MulterError) {
+    if (err instanceof MulterError) {
         const message =
             err.code === 'LIMIT_FILE_SIZE'
                 ? 'Файл слишком большой. Максимальный размер — 5 МБ'

@@ -4,13 +4,13 @@ import cors from 'cors'
 import 'dotenv/config'
 import express, { json, urlencoded } from 'express'
 import mongoose from 'mongoose'
+import rateLimit from 'express-rate-limit'
+import helmet from 'helmet'
 import path from 'path'
 import { DB_ADDRESS, ORIGIN_ALLOW } from './config'
 import errorHandler from './middlewares/error-handler'
 import serveStatic from './middlewares/serverStatic'
 import routes from './routes'
-import helmet from 'helmet'
-import rateLimit from 'express-rate-limit'
 
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 минута
@@ -31,8 +31,8 @@ app.use(
 app.use(limiter)
 app.use(cookieParser())
 
-app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }))
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(serveStatic(path.join(__dirname, 'public')))
 

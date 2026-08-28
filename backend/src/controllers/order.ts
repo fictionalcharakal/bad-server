@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import { FilterQuery, Error as MongooseError, Types } from 'mongoose'
+import sanitizeHtml from 'sanitize-html'
 import BadRequestError from '../errors/bad-request-error'
 import NotFoundError from '../errors/not-found-error'
 import Order, { IOrder, StatusType } from '../models/order'
 import Product, { IProduct } from '../models/product'
 import User from '../models/user'
 import escapeRegExp from '../utils/escapeRegExp'
-import sanitizeHtml from 'sanitize-html'
 import { clampLimit } from '../utils/pagination'
 
 export const getOrders = async (
@@ -28,15 +28,20 @@ export const getOrders = async (
             search,
         } = req.query
 
-        const safeLimit = clampLimit(limit);
+        const safeLimit = clampLimit(limit)
 
         const filters: FilterQuery<Partial<IOrder>> = {}
 
         if (status) {
-            if (typeof status === 'string' && Object.values(StatusType).includes(status as StatusType)) {
-                filters.status = status;
+            if (
+                typeof status === 'string' &&
+                Object.values(StatusType).includes(status as StatusType)
+            ) {
+                filters.status = status
             } else {
-                return next(new BadRequestError('Некорректное значение статуса заказа'))
+                return next(
+                    new BadRequestError('Некорректное значение статуса заказа')
+                )
             }
         }
 
@@ -158,7 +163,7 @@ export const getOrdersCurrentUser = async (
     try {
         const userId = res.locals.user._id
         const { search, page = 1, limit = 5 } = req.query
-        const safeLimit = clampLimit(limit);
+        const safeLimit = clampLimit(limit)
         const options = {
             skip: (Number(page) - 1) * safeLimit,
             limit: safeLimit,
@@ -297,9 +302,9 @@ export const createOrder = async (
 
         const sanitizedComment = comment
             ? sanitizeHtml(comment, {
-                allowedTags: ['b', 'i', 'em', 'strong', 'p', 'br', 'a'],
-                allowedAttributes: { a: ['href'] },
-            })
+                  allowedTags: ['b', 'i', 'em', 'strong', 'p', 'br', 'a'],
+                  allowedAttributes: { a: ['href'] },
+              })
             : comment
 
         items.forEach((id: Types.ObjectId) => {

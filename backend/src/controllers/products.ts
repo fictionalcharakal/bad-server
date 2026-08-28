@@ -74,7 +74,6 @@ const createProduct = async (
     }
 }
 
-
 // PUT /product
 const updateProduct = async (
     req: Request,
@@ -121,7 +120,6 @@ const updateProduct = async (
         return next(error)
     }
 }
-
 
 // DELETE /product
 const deleteProduct = async (

@@ -30,17 +30,12 @@ const storage = multer.diskStorage({
         file: Express.Multer.File,
         cb: FileNameCallback
     ) => {
-        const ext = extname(file.originalname);
+        const ext = extname(file.originalname)
         cb(null, `${randomUUID()}${ext}`)
     },
 })
 
-const types = [
-    'image/png',
-    'image/jpg',
-    'image/jpeg',
-    'image/gif',
-]
+const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif']
 
 const fileFilter = (
     _req: Request,
@@ -54,4 +49,4 @@ const fileFilter = (
     return cb(null, true)
 }
 
-export default multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 }, }) //5мб
+export default multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 } }) // 5мб

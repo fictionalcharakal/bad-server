@@ -6,6 +6,7 @@ import Order, { IOrder, StatusType } from '../models/order'
 import Product, { IProduct } from '../models/product'
 import User from '../models/user'
 import escapeRegExp from '../utils/escapeRegExp'
+import sanitizeHtml from 'sanitize-html'
 
 export const getOrders = async (
     req: Request,
@@ -290,6 +291,13 @@ export const createOrder = async (
         const { address, payment, phone, total, email, items, comment } =
             req.body
 
+        const sanitizedComment = comment
+            ? sanitizeHtml(comment, {
+                allowedTags: ['b', 'i', 'em', 'strong', 'p', 'br', 'a'],
+                allowedAttributes: { a: ['href'] },
+            })
+            : comment
+
         items.forEach((id: Types.ObjectId) => {
             const product = products.find((p) => p._id.equals(id))
             if (!product) {
@@ -311,7 +319,7 @@ export const createOrder = async (
             payment,
             phone,
             email,
-            comment,
+            comment: sanitizedComment,
             customer: userId,
             deliveryAddress: address,
         })

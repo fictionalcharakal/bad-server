@@ -11,6 +11,7 @@ import { DB_ADDRESS, ORIGIN_ALLOW } from './config'
 import errorHandler from './middlewares/error-handler'
 import serveStatic from './middlewares/serverStatic'
 import routes from './routes'
+import { doubleCsrfProtection } from './middlewares/csrf'
 
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 минута
@@ -30,8 +31,8 @@ app.use(
 )
 app.use(limiter)
 app.use(cookieParser())
-
 app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }))
+app.use(doubleCsrfProtection)
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(serveStatic(path.join(__dirname, 'public')))

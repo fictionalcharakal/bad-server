@@ -104,7 +104,7 @@ export default function AdminOrderDetail() {
                     <>
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(dataInfo.comment)
+                                __html: DOMPurify.sanitize(dataInfo.comment),
                             }}
                         />
                     </>

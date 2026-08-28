@@ -14,7 +14,7 @@ import { getOrderByNumber } from '../../services/slice/orders/thunk'
 import { adapterOrderFromServer } from '../../utils/adapterOrderFromServer'
 import { Preloader } from '../preloader'
 import styles from './admin.module.scss'
-import DOMPurify from 'dompurify'
+import { sanitizeHtml } from '../../utils/sanitize'
 
 const ActionsButton = () => {
     const number = useParams().number || ''
@@ -104,7 +104,7 @@ export default function AdminOrderDetail() {
                     <>
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(dataInfo.comment),
+                                __html: sanitizeHtml(dataInfo.comment),
                             }}
                         />
                     </>

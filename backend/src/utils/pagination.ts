@@ -1,4 +1,4 @@
-const MAX_LIMIT = 100
+const MAX_LIMIT = 10
 
 export function clampLimit(limit: unknown): number {
     const parsed = Number(limit) || 10

@@ -15,7 +15,7 @@ import { doubleCsrfProtection } from './middlewares/csrf'
 
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 минута
-    max: 10, // максимум 100 запросов в минуту с одного IP
+    max: 50, // максимум 100 запросов в минуту с одного IP
     standardHeaders: true,
     legacyHeaders: false,
     message: { message: 'Слишком много запросов, попробуйте позже' },

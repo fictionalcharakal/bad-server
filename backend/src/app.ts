@@ -9,10 +9,26 @@ import { DB_ADDRESS, ORIGIN_ALLOW } from './config'
 import errorHandler from './middlewares/error-handler'
 import serveStatic from './middlewares/serverStatic'
 import routes from './routes'
+import helmet from 'helmet'
+import rateLimit from 'express-rate-limit'
+
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1 минута
+    max: 100, // максимум 100 запросов в минуту с одного IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { message: 'Слишком много запросов, попробуйте позже' },
+})
 
 const { PORT = 3000 } = process.env
 const app = express()
 
+app.use(
+    helmet({
+        crossOriginResourcePolicy: { policy: 'cross-origin' },
+    })
+)
+app.use(limiter)
 app.use(cookieParser())
 
 app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }));

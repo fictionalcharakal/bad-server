@@ -7,25 +7,27 @@ import ConflictError from '../errors/conflict-error'
 import NotFoundError from '../errors/not-found-error'
 import Product from '../models/product'
 import movingFile from '../utils/movingFile'
+import { clampLimit } from '../utils/pagination'
 
 // GET /product
 const getProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { page = 1, limit = 5 } = req.query
+        const safeLimit = clampLimit(limit)
         const options = {
-            skip: (Number(page) - 1) * Number(limit),
-            limit: Number(limit),
+            skip: (Number(page) - 1) * safeLimit,
+            limit: safeLimit,
         }
         const products = await Product.find({}, null, options)
         const totalProducts = await Product.countDocuments({})
-        const totalPages = Math.ceil(totalProducts / Number(limit))
+        const totalPages = Math.ceil(totalProducts / safeLimit)
         return res.send({
             items: products,
             pagination: {
                 totalProducts,
                 totalPages,
                 currentPage: Number(page),
-                pageSize: Number(limit),
+                pageSize: safeLimit,
             },
         })
     } catch (err) {
@@ -72,7 +74,7 @@ const createProduct = async (
     }
 }
 
-// TODO: Добавить guard admin
+
 // PUT /product
 const updateProduct = async (
     req: Request,
@@ -120,7 +122,7 @@ const updateProduct = async (
     }
 }
 
-// TODO: Добавить guard admin
+
 // DELETE /product
 const deleteProduct = async (
     req: Request,

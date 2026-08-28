@@ -11,7 +11,7 @@ import { getCurrentUserOrderByNumber } from '../../services/slice/profile-orders
 import { adapterOrderFromServer } from '../../utils/adapterOrderFromServer'
 import { Preloader } from '../preloader'
 import styles from './profile.module.scss'
-import * as DOMPurify from 'dompurify'
+import DOMPurify from 'dompurify'
 
 const CloseButton = () => {
     const navigate = useNavigate()
